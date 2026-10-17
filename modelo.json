@@ -1,15 +1,21 @@
 {
-  "intercepto": 1.5384729585592574,
+  "intercepto": 21.51964453823132,
   "coeficientes": {
-    "consultas_web": 0.3463033562740661,
-    "inversion_publicidad_soles": 0.006699109182241925,
-    "campana_escolar": 5.018213367145449
+    "distancia_km": 2.7742350957517043,
+    "carga_kg": 0.10728632335623635,
+    "via_no_asfaltada": 26.441864153782838
   },
+  "variables": [
+    "distancia_km",
+    "carga_kg",
+    "via_no_asfaltada"
+  ],
+  "objetivo": "costo_transporte_soles",
   "metricas": {
-    "mae": 2.954102420565232,
-    "r2": 0.7910735136647091,
-    "filas_entrenamiento": 88,
-    "filas_prueba": 22
+    "mae": 17.793975041858538,
+    "r2": 0.977187305382063,
+    "filas_entrenamiento": 104,
+    "filas_prueba": 26
   },
-  "nota": "Datos simulados; predicciones educativas."
+  "nota": "Modelo académico basado en 130 viajes simulados. No es una tarifa contractual."
 }
