@@ -1,15 +1,245 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RobotiKit | SENATI Caso 01</title><link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}"></head>
-<body><main class="wrap"><header><b>ROBÓTICA / ANALÍTICA</b><span>PROYECTO SENATI · CASO 01</span></header>
-<section class="intro"><p class="eyebrow">MACHINE LEARNING · REGRESIÓN MÚLTIPLE</p><h1>Predice los pedidos<br><em>de kits de robótica.</em></h1>
-<p>Modelo educativo entrenado con 110 observaciones simuladas. Ingresa los indicadores semanales para obtener una estimación.</p></section>
-<div class="grid"><section class="panel"><h2>01 / Datos de la semana</h2>
-<form method="post" action="/">
-<label for="consultas">Consultas web (5 a 70)</label><input id="consultas" name="consultas" required type="number" min="5" max="70" step="1" value="{{ valores.consultas }}">
-<label for="publicidad">Inversión en publicidad (S/ 0 a S/ 1100)</label><input id="publicidad" name="publicidad" required type="number" min="0" max="1100" step="0.01" value="{{ valores.publicidad }}">
-<label for="campana">Campaña escolar</label><select id="campana" name="campana"><option value="0" {% if valores.campana == '0' %}selected{% endif %}>Sin campaña</option><option value="1" {% if valores.campana == '1' %}selected{% endif %}>Con campaña</option></select>
-<button type="submit">Calcular pedidos estimados →</button></form>{% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}</section>
-<section class="panel results"><h2>02 / Predicción</h2>{% if resultado %}<p>Pedidos semanales estimados</p><div class="large">{{ resultado.entero }} <small>kits</small></div><p>Resultado matemático: {{ resultado.decimal }} pedidos</p>{% else %}<p>Completa el formulario y presiona el botón para calcular.</p>{% endif %}
-<div class="metrics"><div><small>MAE (prueba)</small><strong>{{ '%.2f'|format(metricas.mae) }}</strong><span>pedidos</span></div><div><small>R² (prueba)</small><strong>{{ '%.3f'|format(metricas.r2) }}</strong><span>proporción</span></div></div></section></div>
-<footer>Datos simulados · Predicciones orientativas, no ventas garantizadas · Python / Flask</footer></main></body></html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RobotiKit Experience | SENATI Caso 01</title>
+  <meta name="description" content="Predicción interactiva de pedidos de kits de robótica con Machine Learning.">
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+</head>
+<body>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="grid-lines"></div>
+
+  <main class="page">
+    <header class="topbar glass">
+      <div class="brand-wrap">
+        <div class="brand-icon">R<span>+</span></div>
+        <div>
+          <p class="mini-tag">PROYECTO SENATI · CASO 01</p>
+          <h2 class="brand-title">RobotiKit Experience</h2>
+        </div>
+      </div>
+      <div class="top-badge">Python + Flask + Machine Learning</div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="hero-kicker">PREDICCIÓN EDUCATIVA · REGRESIÓN LINEAL MÚLTIPLE</p>
+        <h1>Una página más <span>visual</span>, más <span>curiosa</span> y más <span>explicativa</span>.</h1>
+        <p class="hero-text">
+          Esta aplicación estima cuántos kits de robótica podrían pedirse en una semana.
+          No solo calcula: también <strong>explica por qué</strong> cambia el resultado,
+          te muestra <strong>ejemplos listos</strong> y resume <strong>cómo piensa el modelo</strong>.
+        </p>
+        <div class="hero-actions">
+          <a href="#predictor" class="cta-main">Probar predicción</a>
+          <a href="#como-funciona" class="cta-secondary">Entender el proceso</a>
+        </div>
+        <div class="hero-stats">
+          <article class="stat-card glass tilt">
+            <span>Observaciones</span>
+            <strong>110</strong>
+            <small>datos simulados</small>
+          </article>
+          <article class="stat-card glass tilt">
+            <span>MAE</span>
+            <strong>{{ '%.2f'|format(metricas.mae) }}</strong>
+            <small>error promedio</small>
+          </article>
+          <article class="stat-card glass tilt">
+            <span>R²</span>
+            <strong>{{ '%.3f'|format(metricas.r2) }}</strong>
+            <small>ajuste del modelo</small>
+          </article>
+        </div>
+      </div>
+
+      <div class="hero-visual glass floating">
+        <div class="robot-card">
+          <div class="robot-head">
+            <span class="eye"></span>
+            <span class="eye"></span>
+          </div>
+          <div class="robot-body"></div>
+        </div>
+        <div class="visual-notes">
+          <div class="note-chip chip-1">consultas web ↑</div>
+          <div class="note-chip chip-2">publicidad ↑</div>
+          <div class="note-chip chip-3">campaña escolar</div>
+        </div>
+        <p class="visual-caption">Mientras más señales positivas recibe el modelo, mayor suele ser el número estimado de pedidos.</p>
+      </div>
+    </section>
+
+    <section class="info-ribbon glass">
+      <div>✨ Diseño renovado</div>
+      <div>🎯 Explicación paso a paso</div>
+      <div>🧠 Ejemplos con interpretación</div>
+      <div>🚀 Animaciones y estilo llamativo</div>
+    </section>
+
+    <section id="predictor" class="predictor-grid">
+      <section class="panel glass form-panel">
+        <div class="panel-top">
+          <p class="section-label">01 · INGRESA LOS DATOS</p>
+          <h3>Calcula los pedidos estimados</h3>
+          <p>Usa valores dentro del rango permitido por el caso.</p>
+        </div>
+
+        <form method="post" action="#predictor" class="predict-form">
+          <label for="consultas">Consultas web por semana</label>
+          <div class="input-shell glow-on-focus">
+            <input id="consultas" name="consultas" type="number" min="5" max="70" step="1" required value="{{ valores.consultas }}">
+            <span>5 a 70</span>
+          </div>
+
+          <label for="publicidad">Inversión en publicidad</label>
+          <div class="input-shell glow-on-focus">
+            <b>S/</b>
+            <input id="publicidad" name="publicidad" type="number" min="0" max="1100" step="0.01" required value="{{ valores.publicidad }}">
+            <span>0 a 1100</span>
+          </div>
+
+          <label for="campana">Campaña escolar</label>
+          <div class="select-shell glow-on-focus">
+            <select id="campana" name="campana">
+              <option value="0" {% if valores.campana == '0' %}selected{% endif %}>0 · No hay campaña</option>
+              <option value="1" {% if valores.campana == '1' %}selected{% endif %}>1 · Sí hay campaña</option>
+            </select>
+          </div>
+
+          <button class="pulse-btn" type="submit">Predecir ahora <span>→</span></button>
+        </form>
+
+        {% if error %}
+          <div class="alert error-box">{{ error }}</div>
+        {% endif %}
+      </section>
+
+      <section class="panel glass result-panel">
+        <div class="panel-top">
+          <p class="section-label">02 · RESULTADO</p>
+          <h3>Interpretación del pronóstico</h3>
+          <p>No solo te mostramos el número, también te explicamos su sentido.</p>
+        </div>
+
+        {% if resultado %}
+        <div class="result-glow"></div>
+        <div class="big-result">{{ resultado.entero }}<small> kits</small></div>
+        <p class="result-decimal">Resultado matemático exacto: <strong>{{ resultado.decimal }}</strong> pedidos</p>
+
+        <div class="result-mini-grid">
+          <div><span>Consultas</span><strong>{{ resultado.consultas }}</strong></div>
+          <div><span>Publicidad</span><strong>S/ {{ resultado.publicidad }}</strong></div>
+          <div><span>Campaña</span><strong>{{ resultado.campana }}</strong></div>
+        </div>
+
+        <div class="why-box">
+          <h4>¿Por qué salió ese resultado?</h4>
+          <ul>
+            {% for idea in explicaciones %}
+            <li>{{ idea }}</li>
+            {% endfor %}
+          </ul>
+          <p class="final-idea">{{ conclusion }}</p>
+        </div>
+        {% else %}
+        <div class="empty-state">
+          <div class="empty-badge">🤖</div>
+          <h4>Tu predicción aparecerá aquí</h4>
+          <p>Completa el formulario y observa cómo el modelo transforma los datos en una estimación comprensible.</p>
+        </div>
+        {% endif %}
+      </section>
+    </section>
+
+    <section id="como-funciona" class="explain-grid">
+      <article class="explain-card glass tilt">
+        <span class="number-pill">1</span>
+        <h3>Recibe los datos</h3>
+        <p>La página toma tres entradas: <strong>consultas web</strong>, <strong>inversión publicitaria</strong> y <strong>campaña escolar</strong>. Esas variables explican el comportamiento de la demanda semanal.</p>
+      </article>
+      <article class="explain-card glass tilt">
+        <span class="number-pill">2</span>
+        <h3>Aplica el modelo</h3>
+        <p>El sistema usa una fórmula de <strong>regresión lineal múltiple</strong>. Cada variable tiene un peso aprendido durante el entrenamiento con los datos históricos del caso.</p>
+      </article>
+      <article class="explain-card glass tilt">
+        <span class="number-pill">3</span>
+        <h3>Interpreta la predicción</h3>
+        <p>El número final representa cuántos kits podrían pedirse. Después lo redondeamos a una cantidad entera y mostramos una explicación simple del porqué.</p>
+      </article>
+    </section>
+
+    <section class="examples-zone">
+      <div class="section-header">
+        <p class="section-label">03 · EJEMPLIFICACIÓN</p>
+        <h3>Prueba escenarios de ejemplo</h3>
+        <p>Puedes explorar casos rápidos y ver cómo cambian los pedidos.</p>
+      </div>
+      <div class="examples-grid">
+        {% for ejemplo in ejemplos %}
+        <article class="example-card glass tilt">
+          <h4>{{ ejemplo.titulo }}</h4>
+          <p>{{ ejemplo.descripcion }}</p>
+          <ul>
+            <li><span>Consultas web</span> <strong>{{ ejemplo.consultas }}</strong></li>
+            <li><span>Publicidad</span> <strong>S/ {{ ejemplo.publicidad }}</strong></li>
+            <li><span>Campaña</span> <strong>{{ ejemplo.campana }}</strong></li>
+          </ul>
+          <div class="example-result">Predicción: <b>{{ ejemplo.prediccion }}</b> kits <small>({{ ejemplo.prediccion_decimal }})</small></div>
+          <form method="post" action="#predictor">
+            <input type="hidden" name="consultas" value="{{ ejemplo.consultas }}">
+            <input type="hidden" name="publicidad" value="{{ ejemplo.publicidad }}">
+            <input type="hidden" name="campana" value="{{ ejemplo.campana }}">
+            <button type="submit" class="mini-btn">Usar este ejemplo</button>
+          </form>
+        </article>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="concept-zone glass">
+      <div class="section-header left">
+        <p class="section-label">04 · ¿POR QUÉ FUNCIONA?</p>
+        <h3>Explicación sencilla del modelo</h3>
+      </div>
+      <div class="concept-grid">
+        <article>
+          <h4>Porque aprende patrones</h4>
+          <p>El modelo observa ejemplos anteriores y detecta cómo se relacionan las entradas con los pedidos. Si aumentan las consultas y la publicidad, normalmente también sube la predicción.</p>
+        </article>
+        <article>
+          <h4>Porque cada variable aporta algo distinto</h4>
+          <p>Las consultas web representan el interés, la publicidad impulsa visibilidad y la campaña escolar agrega un efecto extra. Al combinarse, producen una estimación más útil que usar una sola variable.</p>
+        </article>
+        <article>
+          <h4>Porque la regresión estima una tendencia</h4>
+          <p>No adivina el futuro con certeza total. Lo que hace es calcular una tendencia probable a partir de los datos de entrenamiento. Por eso sirve como apoyo para decidir, no como garantía absoluta.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="faq-grid">
+      <details class="glass faq-item">
+        <summary>¿Qué significa MAE?</summary>
+        <p>Es el error absoluto medio. Nos dice cuántos pedidos se equivoca el modelo, en promedio, cuando hace predicciones con los datos de prueba.</p>
+      </details>
+      <details class="glass faq-item">
+        <summary>¿Qué significa R²?</summary>
+        <p>Indica qué tan bien la variación de los datos es explicada por el modelo. Mientras más se acerque a 1, mejor suele ajustarse a la información evaluada.</p>
+      </details>
+      <details class="glass faq-item">
+        <summary>¿La predicción siempre se cumple?</summary>
+        <p>No. Es una estimación educativa basada en datos simulados. Sirve para comprender el proceso de modelado y apoyar decisiones, no para garantizar ventas reales.</p>
+      </details>
+    </section>
+
+    <footer class="footer">
+      <p>Proyecto formativo SENATI · Datos simulados · Diseño mejorado con explicaciones, ejemplos y animaciones visuales.</p>
+    </footer>
+  </main>
+</body>
+</html>
