@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RobotiKit | SENATI Caso 01</title><link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}"></head>
+<body><main class="wrap"><header><b>ROBÓTICA / ANALÍTICA</b><span>PROYECTO SENATI · CASO 01</span></header>
+<section class="intro"><p class="eyebrow">MACHINE LEARNING · REGRESIÓN MÚLTIPLE</p><h1>Predice los pedidos<br><em>de kits de robótica.</em></h1>
+<p>Modelo educativo entrenado con 110 observaciones simuladas. Ingresa los indicadores semanales para obtener una estimación.</p></section>
+<div class="grid"><section class="panel"><h2>01 / Datos de la semana</h2>
+<form method="post" action="/">
+<label for="consultas">Consultas web (5 a 70)</label><input id="consultas" name="consultas" required type="number" min="5" max="70" step="1" value="{{ valores.consultas }}">
+<label for="publicidad">Inversión en publicidad (S/ 0 a S/ 1100)</label><input id="publicidad" name="publicidad" required type="number" min="0" max="1100" step="0.01" value="{{ valores.publicidad }}">
+<label for="campana">Campaña escolar</label><select id="campana" name="campana"><option value="0" {% if valores.campana == '0' %}selected{% endif %}>Sin campaña</option><option value="1" {% if valores.campana == '1' %}selected{% endif %}>Con campaña</option></select>
+<button type="submit">Calcular pedidos estimados →</button></form>{% if error %}<p class="error" role="alert">{{ error }}</p>{% endif %}</section>
+<section class="panel results"><h2>02 / Predicción</h2>{% if resultado %}<p>Pedidos semanales estimados</p><div class="large">{{ resultado.entero }} <small>kits</small></div><p>Resultado matemático: {{ resultado.decimal }} pedidos</p>{% else %}<p>Completa el formulario y presiona el botón para calcular.</p>{% endif %}
+<div class="metrics"><div><small>MAE (prueba)</small><strong>{{ '%.2f'|format(metricas.mae) }}</strong><span>pedidos</span></div><div><small>R² (prueba)</small><strong>{{ '%.3f'|format(metricas.r2) }}</strong><span>proporción</span></div></div></section></div>
+<footer>Datos simulados · Predicciones orientativas, no ventas garantizadas · Python / Flask</footer></main></body></html>
