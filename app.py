@@ -1,4 +1,8 @@
+"""AgroRuta SENATI: web de predicción de costos de transporte (solo Flask/HTML/CSS).
+Los coeficientes provienen del entrenamiento reproducible de datos.csv.
+"""
 import json
+import math
 import os
 from pathlib import Path
 from flask import Flask, render_template, request
@@ -10,144 +14,79 @@ with (BASE / "modelo.json").open(encoding="utf-8") as archivo:
 app = Flask(__name__)
 
 EJEMPLOS = [
-    {
-        "titulo": "Escenario base",
-        "consultas": 20,
-        "publicidad": 200,
-        "campana": 0,
-        "descripcion": "Pocas consultas, inversión moderada y sin campaña escolar.",
-    },
-    {
-        "titulo": "Semana potente",
-        "consultas": 55,
-        "publicidad": 800,
-        "campana": 1,
-        "descripcion": "Más movimiento digital, fuerte publicidad y campaña activa.",
-    },
-    {
-        "titulo": "Máximo interés",
-        "consultas": 70,
-        "publicidad": 1100,
-        "campana": 1,
-        "descripcion": "El escenario más alto permitido por el caso de estudio.",
-    },
+    {"nombre": "Ruta corta", "subtitulo": "Caso del instructor · 01", "distancia": 25, "carga": 400, "via": 0,
+     "detalle": "Trayecto corto y asfaltado con carga ligera.", "etiqueta": "ASFALTADA"},
+    {"nombre": "Ruta exigente", "subtitulo": "Caso del instructor · 02", "distancia": 100, "carga": 1200, "via": 1,
+     "detalle": "Más distancia, más carga y carretera no asfaltada.", "etiqueta": "NO ASFALTADA"},
+    {"nombre": "Ruta intermedia", "subtitulo": "Exploración adicional", "distancia": 70, "carga": 850, "via": 0,
+     "detalle": "Una combinación intermedia para comparar el costo.", "etiqueta": "ASFALTADA"},
 ]
 
 
-def estimar(consultas, publicidad, campana):
-    factores = {
-        "consultas_web": consultas,
-        "inversion_publicidad_soles": publicidad,
-        "campana_escolar": campana,
+def predecir_y_desglosar(distancia, carga, via):
+    """Regresión múltiple: intercepto + distancia·b1 + carga·b2 + vía·b3."""
+    c = MODELO["coeficientes"]
+    base = MODELO["intercepto"]
+    por_distancia = c["distancia_km"] * distancia
+    por_carga = c["carga_kg"] * carga
+    por_via = c["via_no_asfaltada"] * via
+    return base + por_distancia + por_carga + por_via, {
+        "base": round(base, 2),
+        "distancia": round(por_distancia, 2),
+        "carga": round(por_carga, 2),
+        "via": round(por_via, 2),
     }
-    return MODELO["intercepto"] + sum(
-        coef * factores[nombre] for nombre, coef in MODELO["coeficientes"].items()
-    )
 
 
-def construir_insights(consultas, publicidad, campana, estimacion):
-    ideas = []
-    if consultas >= 50:
-        ideas.append(
-            "Las consultas web son altas, así que existe bastante interés del público en los kits."
-        )
-    elif consultas >= 30:
-        ideas.append(
-            "Las consultas web están en un nivel medio, lo que sugiere una demanda moderada."
-        )
-    else:
-        ideas.append(
-            "Las consultas web son relativamente bajas, por lo que el interés inicial es más limitado."
-        )
-
-    if publicidad >= 700:
-        ideas.append(
-            "La inversión publicitaria es fuerte; esto suele ayudar a incrementar la visibilidad del producto."
-        )
-    elif publicidad >= 300:
-        ideas.append(
-            "La inversión publicitaria es intermedia y aporta apoyo a la captación de pedidos."
-        )
-    else:
-        ideas.append(
-            "La inversión publicitaria es baja, de modo que el impulso comercial es más reducido."
-        )
-
-    if campana == 1:
-        ideas.append(
-            "La campaña escolar está activa, por eso el modelo añade un efecto positivo importante en la predicción."
-        )
-    else:
-        ideas.append(
-            "No hay campaña escolar, así que el pronóstico depende sobre todo de las consultas y de la publicidad."
-        )
-
-    if estimacion >= 30:
-        cierre = "Por la combinación de factores, se espera una semana fuerte en pedidos."
-    elif estimacion >= 18:
-        cierre = "El resultado sugiere una semana aceptable con un volumen medio de pedidos."
-    else:
-        cierre = "La estimación apunta a una semana tranquila con una demanda limitada."
-
-    return ideas, cierre
+def interpretar(distancia, carga, via):
+    return [
+        f"Según el modelo, {distancia:g} km aportan un componente de costo por recorrido; una ruta más larga aumenta la estimación.",
+        f"Transportar {carga:g} kg añade un componente por peso, porque la ecuación asocia mayor carga con mayor costo.",
+        "La vía no asfaltada suma un recargo estimado respecto de una ruta asfaltada con la misma distancia y carga."
+        if via == 1 else
+        "La vía asfaltada no incorpora el recargo que la ecuación asigna a los caminos no asfaltados.",
+    ]
 
 
 @app.route("/", methods=["GET", "POST"])
 def inicio():
-    valores = {"consultas": "20", "publicidad": "200", "campana": "0"}
-    error = None
-    resultado = None
-    explicaciones = []
-    conclusion = ""
-
+    valores = {"distancia": "25", "carga": "400", "via": "0"}
+    error, resultado = None, None
     if request.method == "POST":
         valores = {k: request.form.get(k, "").strip() for k in valores}
         try:
-            consultas = float(valores["consultas"])
-            publicidad = float(valores["publicidad"])
-            if valores["campana"] not in ("0", "1"):
-                raise ValueError("La campaña escolar debe ser 0 o 1.")
-            campana = int(valores["campana"])
-            if not 5 <= consultas <= 70 or not consultas.is_integer():
-                raise ValueError("Las consultas deben ser un número entero entre 5 y 70.")
-            if not 0 <= publicidad <= 1100:
-                raise ValueError("La inversión debe estar entre S/ 0 y S/ 1100.")
-
-            estimacion = estimar(consultas, publicidad, campana)
-            explicaciones, conclusion = construir_insights(
-                consultas, publicidad, campana, estimacion
-            )
+            distancia = float(valores["distancia"])
+            carga = float(valores["carga"])
+            if not math.isfinite(distancia) or not (3 <= distancia <= 165):
+                raise ValueError("La distancia debe estar entre 3 y 165 kilómetros.")
+            if not math.isfinite(carga) or not (50 <= carga <= 2050):
+                raise ValueError("La carga debe estar entre 50 y 2050 kilogramos.")
+            if valores["via"] not in ("0", "1"):
+                raise ValueError("Selecciona vía asfaltada o no asfaltada.")
+            via = int(valores["via"])
+            prediccion, desglose = predecir_y_desglosar(distancia, carga, via)
             resultado = {
-                "decimal": f"{estimacion:.2f}",
-                "entero": max(0, round(estimacion)),
-                "consultas": int(consultas),
-                "publicidad": f"{publicidad:.2f}",
-                "campana": "Sí" if campana == 1 else "No",
+                "importe": f"{max(0, prediccion):,.2f}",
+                "distancia": f"{distancia:g}",
+                "carga": f"{carga:g}",
+                "tipo_via": "No asfaltada" if via else "Asfaltada",
+                "desglose": desglose,
+                "interpretaciones": interpretar(distancia, carga, via),
             }
-        except (ValueError, OverflowError) as e:
-            error = str(e) if str(e) else "Revisa los datos ingresados."
+        except (ValueError, OverflowError) as exc:
+            error = str(exc) or "Revisa los valores ingresados."
 
     ejemplos = []
     for ejemplo in EJEMPLOS:
-        pred = estimar(
-            ejemplo["consultas"], ejemplo["publicidad"], ejemplo["campana"]
-        )
-        nuevo = dict(ejemplo)
-        nuevo["prediccion"] = max(0, round(pred))
-        nuevo["prediccion_decimal"] = f"{pred:.2f}"
-        ejemplos.append(nuevo)
+        importe, _ = predecir_y_desglosar(ejemplo["distancia"], ejemplo["carga"], ejemplo["via"])
+        ejemplos.append({**ejemplo, "costo": f"{importe:,.2f}"})
 
     return render_template(
-        "index.html",
-        valores=valores,
-        resultado=resultado,
-        error=error,
-        metricas=MODELO["metricas"],
-        ejemplos=ejemplos,
-        explicaciones=explicaciones,
-        conclusion=conclusion,
+        "index.html", valores=valores, error=error, resultado=resultado,
+        metricas=MODELO["metricas"], coeficientes=MODELO["coeficientes"],
+        intercepto=MODELO["intercepto"], ejemplos=ejemplos,
     )
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=False)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", "5000")), debug=False)
