@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RobotiKit Experience | SENATI Caso 01</title>
   <meta name="description" content="Predicción interactiva de pedidos de kits de robótica con Machine Learning.">
-  <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css', v='v3-colores-imagenes') }}">
 </head>
 <body>
   <div class="bg-orb orb-1"></div>
@@ -27,7 +27,7 @@
     <section class="hero">
       <div class="hero-copy">
         <p class="hero-kicker">PREDICCIÓN EDUCATIVA · REGRESIÓN LINEAL MÚLTIPLE</p>
-        <h1>Una página más <span>visual</span>, más <span>curiosa</span> y más <span>explicativa</span>.</h1>
+        <h1>¿Cuántos <span>kits de robótica</span> venderás esta semana?</h1>
         <p class="hero-text">
           Esta aplicación estima cuántos kits de robótica podrían pedirse en una semana.
           No solo calcula: también <strong>explica por qué</strong> cambia el resultado,
@@ -57,13 +57,10 @@
       </div>
 
       <div class="hero-visual glass floating">
-        <div class="robot-card">
-          <div class="robot-head">
-            <span class="eye"></span>
-            <span class="eye"></span>
-          </div>
-          <div class="robot-body"></div>
-        </div>
+        <figure class="robot-photo-card">
+          <img class="hero-photo" src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&amp;fit=crop&amp;w=1100&amp;q=85" alt="Kit educativo de robótica y electrónica: placa Arduino, servomotores y sensores" loading="eager">
+          <figcaption>Imagina, construye y predice.</figcaption>
+        </figure>
         <div class="visual-notes">
           <div class="note-chip chip-1">consultas web ↑</div>
           <div class="note-chip chip-2">publicidad ↑</div>
@@ -173,9 +170,28 @@
       </article>
     </section>
 
+    
+    <section class="gallery-section" aria-labelledby="galeria-titulo">
+      <div class="section-header">
+        <p class="section-label">03 · ROBÓTICA EN ACCIÓN</p>
+        <h3 id="galeria-titulo">De los circuitos a las decisiones</h3>
+        <p>Explora cómo las herramientas tecnológicas y los datos se conectan en un proyecto de Machine Learning.</p>
+      </div>
+      <div class="gallery-grid">
+        <article class="gallery-card glass">
+          <img src="{{ url_for('static', filename='robot-lab.svg') }}" alt="Ilustración colorida de un robot educativo con sensores y ruedas" loading="lazy">
+          <div><span class="gallery-label">01 • PRODUCTO</span><h4>Conoce los kits</h4><p>Los kits integran componentes, programación y creatividad para construir proyectos tecnológicos.</p></div>
+        </article>
+        <article class="gallery-card glass">
+          <img src="{{ url_for('static', filename='prediccion.svg') }}" alt="Ilustración de una gráfica ascendente que representa las predicciones del modelo" loading="lazy">
+          <div><span class="gallery-label">02 • DATOS</span><h4>Encuentra patrones</h4><p>El algoritmo relaciona consultas web, anuncios y campañas escolares con los pedidos.</p></div>
+        </article>
+      </div>
+    </section>
+
     <section class="examples-zone">
       <div class="section-header">
-        <p class="section-label">03 · EJEMPLIFICACIÓN</p>
+        <p class="section-label">04 · EJEMPLIFICACIÓN</p>
         <h3>Prueba escenarios de ejemplo</h3>
         <p>Puedes explorar casos rápidos y ver cómo cambian los pedidos.</p>
       </div>
@@ -203,7 +219,7 @@
 
     <section class="concept-zone glass">
       <div class="section-header left">
-        <p class="section-label">04 · ¿POR QUÉ FUNCIONA?</p>
+        <p class="section-label">05 · ¿POR QUÉ FUNCIONA?</p>
         <h3>Explicación sencilla del modelo</h3>
       </div>
       <div class="concept-grid">
@@ -238,7 +254,7 @@
     </section>
 
     <footer class="footer">
-      <p>Proyecto formativo SENATI · Datos simulados · Diseño mejorado con explicaciones, ejemplos y animaciones visuales.</p>
+      <p>Proyecto formativo SENATI · Datos simulados · Las estimaciones no garantizan ventas. Fotografía de componentes: Unsplash.</p>
     </footer>
   </main>
 </body>
