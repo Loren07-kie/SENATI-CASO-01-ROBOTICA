@@ -27,3 +27,58 @@ body{margin:0;color:var(--text);background:radial-gradient(circle at 8% 10%, rgb
 .explain-grid{grid-template-columns:repeat(3,1fr); margin:22px 0}.explain-card,.example-card,.faq-item{border-radius:26px; padding:22px}.number-pill{display:inline-grid; place-items:center; width:44px; height:44px; border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--blue)); color:#061522; font-weight:800}.examples-zone,.concept-zone{margin-top:24px}.section-header{margin-bottom:16px; text-align:center}.section-header.left{text-align:left}.examples-grid{grid-template-columns:repeat(3,1fr)}.example-card p,.concept-grid p,.faq-item p,.explain-card p{color:var(--muted)}.example-card ul{list-style:none; margin:12px 0; padding:0}.example-card li{display:flex; justify-content:space-between; gap:10px; padding:7px 0; border-bottom:1px dashed rgba(255,255,255,.1)}.example-result{margin:14px 0 12px; color:#eafcff; font-size:.98rem}.mini-btn{width:100%; border:none; cursor:pointer; border-radius:14px; padding:14px 16px;color:#fff; font-weight:700; background:linear-gradient(90deg,rgba(155,108,255,.95),rgba(89,183,255,.95))}.concept-zone{border-radius:30px; padding:28px}.concept-grid{grid-template-columns:repeat(3,1fr)}.concept-grid article{padding:6px 8px}.faq-grid{grid-template-columns:repeat(3,1fr); margin-top:24px}.faq-item{cursor:pointer}.faq-item summary{list-style:none}.faq-item summary::-webkit-details-marker{display:none}.faq-item[open]{border-color:rgba(84,242,208,.35)}.footer{text-align:center; color:#98abc3; padding:34px 10px 10px}.tilt{transition:transform .25s ease, box-shadow .25s ease}.tilt:hover{transform:translateY(-6px) scale(1.01); box-shadow:0 26px 48px rgba(0,0,0,.34)}
 @keyframes softFloat{50%{transform:translateY(-10px)}}@keyframes floatOrb{50%{transform:translate(30px,-16px)}}@keyframes bob{50%{transform:translateY(-12px)}}@keyframes pulse{50%{box-shadow:0 18px 42px rgba(255,213,106,.32)}}@keyframes blink{0%,44%,48%,100%{transform:scaleY(1)}46%{transform:scaleY(.1)}}
 @media (max-width:1050px){.hero,.predictor-grid,.examples-grid,.explain-grid,.concept-grid,.faq-grid{grid-template-columns:1fr}.info-ribbon,.hero-stats{grid-template-columns:repeat(2,1fr)}}@media (max-width:720px){.page{padding:18px 14px 40px}.topbar{flex-direction:column; align-items:flex-start}.brand-title{font-size:1.4rem}.info-ribbon,.hero-stats,.result-mini-grid{grid-template-columns:1fr}.panel,.concept-zone,.hero-visual{padding:20px}.hero-actions{flex-direction:column}.cta-main,.cta-secondary{width:100%}.top-badge{white-space:normal}.hero h1{letter-spacing:-1px}}
+/* -------- V3 · Neon Lab: nuevas imágenes, colores y animaciones -------- */
+:root{--bg:#150b32;--bg-2:#0d1548;--panel:rgba(31,19,72,.69);--line:rgba(223,191,255,.22);--cyan:#6dffe3;--pink:#ff69c9;--violet:#a77bff;--yellow:#ffda70;--blue:#62cfff}
+body{background:radial-gradient(ellipse at 8% 0%,#68287e 0%,transparent 38%),radial-gradient(ellipse at 95% 16%,#1a65a0 0%,transparent 37%),radial-gradient(ellipse at 30% 85%,#542060 0%,transparent 38%),linear-gradient(135deg,#140b30 0%,#0c1842 62%,#250d3b 100%)}
+.topbar{background:linear-gradient(110deg,rgba(112,47,145,.75),rgba(37,78,164,.72));box-shadow:0 14px 55px rgba(147,82,235,.17)}
+.brand-icon{background:linear-gradient(135deg,#ffcf61,#fb68cc 48%,#7fd8ff);box-shadow:0 0 40px rgba(255,128,210,.35)}
+.hero h1 span{background-image:linear-gradient(100deg,#79f9ef 0%,#ffd66a 40%,#ff73d7 78%,#b8a0ff 100%)}
+.hero-kicker,.section-label{color:#ffc86d}
+.hero-copy{animation:riseIn .75s cubic-bezier(.2,.7,.2,1) both}
+.hero-visual{background:linear-gradient(135deg,rgba(146,57,211,.46),rgba(39,165,231,.4));border-color:rgba(211,164,255,.4);padding:15px;min-height:475px}
+.robot-photo-card{height:405px;position:relative;margin:0;border-radius:24px;overflow:hidden;isolation:isolate;background:linear-gradient(135deg,#bf4ed6,#31c4e2)}
+.hero-photo{display:block;width:100%;height:100%;object-fit:cover;filter:saturate(1.5) contrast(1.08);transition:transform .7s ease,filter .6s ease}
+.robot-photo-card::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(80,14,115,.10) 15%,rgba(25,7,56,.75) 100%);pointer-events:none}
+.robot-photo-card:hover .hero-photo{transform:scale(1.07) rotate(-1deg);filter:saturate(1.8)}
+.robot-photo-card figcaption{position:absolute;z-index:2;left:23px;bottom:22px;font:800 26px/1.15 'Space Grotesk',sans-serif;color:white;max-width:300px;text-shadow:0 3px 20px #24124b}
+.hero-visual .note-chip{z-index:3;box-shadow:0 10px 35px rgba(0,0,0,.25);border-color:rgba(255,255,255,.45);backdrop-filter:blur(12px)}
+.chip-1{background:linear-gradient(100deg,rgba(0,105,133,.92),rgba(18,60,131,.85));color:#e4fff8}
+.chip-2{background:linear-gradient(100deg,rgba(149,64,37,.97),rgba(187,49,119,.89));color:#fff1ab}
+.chip-3{background:linear-gradient(100deg,rgba(110,46,175,.95),rgba(43,81,164,.93));color:#ffe4fa}
+.visual-caption{font-size:12px;margin:12px 0 0}
+.hero-stats .stat-card:nth-child(1){background:linear-gradient(145deg,rgba(255,105,201,.24),rgba(122,75,241,.22))}
+.hero-stats .stat-card:nth-child(2){background:linear-gradient(145deg,rgba(255,206,85,.2),rgba(253,113,120,.2))}
+.hero-stats .stat-card:nth-child(3){background:linear-gradient(145deg,rgba(78,226,255,.21),rgba(93,98,255,.24))}
+.info-ribbon{background:linear-gradient(110deg,rgba(121,68,236,.36),rgba(255,88,178,.22),rgba(44,178,212,.26));border-color:rgba(243,203,255,.27)}
+.panel{border-color:rgba(236,194,255,.25)}
+.form-panel{background:linear-gradient(160deg,rgba(71,37,132,.80),rgba(19,39,105,.70))}
+.result-panel{background:linear-gradient(150deg,rgba(19,67,131,.73),rgba(109,36,131,.72))}
+.pulse-btn{background:linear-gradient(110deg,#ffda72,#ff79c4 55%,#a998ff);color:#271346;box-shadow:0 18px 42px rgba(255,103,191,.3)}
+.pulse-btn:hover{background:linear-gradient(110deg,#fff0a6,#ff95d2,#c9adff)}
+.input-shell,.select-shell{background:rgba(8,10,40,.45)}
+.input-shell input,.select-shell select{min-width:0}
+.select-shell option{color:#1c1640;background:#fff}
+.explain-card:nth-child(1){background:linear-gradient(150deg,rgba(73,30,123,.9),rgba(209,69,143,.43))}
+.explain-card:nth-child(2){background:linear-gradient(150deg,rgba(26,109,142,.82),rgba(82,81,194,.52))}
+.explain-card:nth-child(3){background:linear-gradient(150deg,rgba(127,74,40,.73),rgba(144,47,137,.52))}
+.example-card:nth-child(1){background:linear-gradient(165deg,rgba(73,38,144,.82),rgba(25,24,70,.76))}
+.example-card:nth-child(2){background:linear-gradient(165deg,rgba(157,45,118,.71),rgba(32,24,87,.75))}
+.example-card:nth-child(3){background:linear-gradient(165deg,rgba(24,120,145,.67),rgba(43,27,94,.78))}
+.concept-zone{background:linear-gradient(145deg,rgba(99,52,151,.49),rgba(24,54,108,.68))}
+.number-pill{background:linear-gradient(135deg,#ffd974,#ff79c4);color:#352051}
+.gallery-section{margin:55px 0 42px;scroll-margin-top:24px}
+.gallery-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.gallery-card{border-radius:28px;overflow:hidden;background:rgba(24,21,69,.8);transition:transform .35s ease,border-color .35s ease}
+.gallery-card:hover{transform:translateY(-8px) rotate(.4deg);border-color:rgba(255,209,108,.7)}
+.gallery-card img{display:block;width:100%;aspect-ratio:760/450;object-fit:cover;transition:transform .65s ease}
+.gallery-card:hover img{transform:scale(1.045)}
+.gallery-card>div{padding:24px 27px}
+.gallery-card h4{font:800 26px 'Space Grotesk',sans-serif;margin:8px 0}
+.gallery-card p{margin:0;color:#d8daff}
+.gallery-label{color:#ffd86c;letter-spacing:2px;font-size:11px;font-weight:800}
+.panel,.gallery-card,.example-card,.explain-card{animation:riseIn .85s ease both}
+.result-panel{animation-delay:.12s}.gallery-card:nth-child(2){animation-delay:.18s}
+.faq-item{background:linear-gradient(150deg,rgba(88,51,138,.6),rgba(26,79,129,.5))}
+@keyframes riseIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:780px){.gallery-grid{grid-template-columns:1fr}.hero-visual{min-height:420px}.robot-photo-card{height:350px}.hero-visual .chip-2{bottom:95px}.robot-photo-card figcaption{font-size:21px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
