@@ -3,254 +3,129 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RobotiKit Experience | SENATI Caso 01</title>
-  <meta name="description" content="Predicción interactiva de pedidos de kits de robótica con Machine Learning.">
-  <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css', v='v3-colores-imagenes') }}">
+  <meta name="theme-color" content="#102d32">
+  <meta name="description" content="AgroRuta: simulador educativo de costos de transporte agrícola con regresión lineal múltiple, Python y Flask.">
+  <title>AgroRuta · Predicción de transporte agrícola | SENATI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilos.css', v='case2-v1') }}">
 </head>
 <body>
-  <div class="bg-orb orb-1"></div>
-  <div class="bg-orb orb-2"></div>
-  <div class="grid-lines"></div>
-
-  <main class="page">
-    <header class="topbar glass">
-      <div class="brand-wrap">
-        <div class="brand-icon">R<span>+</span></div>
-        <div>
-          <p class="mini-tag">PROYECTO SENATI · CASO 01</p>
-          <h2 class="brand-title">RobotiKit Experience</h2>
-        </div>
-      </div>
-      <div class="top-badge">Python + Flask + Machine Learning</div>
+  <div class="sun-glow" aria-hidden="true"></div>
+  <div class="page">
+    <header class="navbar glass">
+      <a href="#inicio" class="brand" aria-label="Volver al inicio">
+        <span class="brand-icon">A<span class="brand-plus">✳</span></span>
+        <span><strong>AgroRuta</strong><small>SISTEMA DE COSTOS INTELIGENTES</small></span>
+      </a>
+      <nav aria-label="Navegación principal"><a href="#calculadora">Simulador</a><a href="#ejemplos">Ejemplos</a><a href="#explicacion">¿Cómo funciona?</a></nav>
+      <span class="badge-caso">SENATI · CASO 02</span>
     </header>
 
-    <section class="hero">
+    <section class="hero" id="inicio">
       <div class="hero-copy">
-        <p class="hero-kicker">PREDICCIÓN EDUCATIVA · REGRESIÓN LINEAL MÚLTIPLE</p>
-        <h1>¿Cuántos <span>kits de robótica</span> venderás esta semana?</h1>
-        <p class="hero-text">
-          Esta aplicación estima cuántos kits de robótica podrían pedirse en una semana.
-          No solo calcula: también <strong>explica por qué</strong> cambia el resultado,
-          te muestra <strong>ejemplos listos</strong> y resume <strong>cómo piensa el modelo</strong>.
-        </p>
+        <div class="eyebrow"><span class="live-dot"></span> MACHINE LEARNING + TRANSPORTE AGRÍCOLA</div>
+        <h1>Del campo al destino, <em>conoce el costo</em> antes de partir.</h1>
+        <p>Calcula el <strong>costo estimado de transportar productos agrícolas</strong> usando distancia, peso y tipo de vía. Aprende cómo un modelo de regresión convierte esos datos en soles.</p>
         <div class="hero-actions">
-          <a href="#predictor" class="cta-main">Probar predicción</a>
-          <a href="#como-funciona" class="cta-secondary">Entender el proceso</a>
+          <a class="btn btn-primary" href="#calculadora">Calcular mi viaje <span aria-hidden="true">↗</span></a>
+          <a class="btn btn-outline" href="#explicacion">Explorar el proceso <span aria-hidden="true">↓</span></a>
         </div>
-        <div class="hero-stats">
-          <article class="stat-card glass tilt">
-            <span>Observaciones</span>
-            <strong>110</strong>
-            <small>datos simulados</small>
-          </article>
-          <article class="stat-card glass tilt">
-            <span>MAE</span>
-            <strong>{{ '%.2f'|format(metricas.mae) }}</strong>
-            <small>error promedio</small>
-          </article>
-          <article class="stat-card glass tilt">
-            <span>R²</span>
-            <strong>{{ '%.3f'|format(metricas.r2) }}</strong>
-            <small>ajuste del modelo</small>
-          </article>
+        <div class="quick-stats">
+          <div><strong>130</strong><span>viajes simulados</span></div>
+          <div><strong>{{ '%.3f'|format(metricas.r2) }}</strong><span>R² en prueba</span></div>
+          <div><strong>S/ {{ '%.2f'|format(metricas.mae) }}</strong><span>MAE en prueba</span></div>
         </div>
       </div>
-
-      <div class="hero-visual glass floating">
-        <figure class="robot-photo-card">
-          <img class="hero-photo" src="https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&amp;fit=crop&amp;w=1100&amp;q=85" alt="Kit educativo de robótica y electrónica: placa Arduino, servomotores y sensores" loading="eager">
-          <figcaption>Imagina, construye y predice.</figcaption>
-        </figure>
-        <div class="visual-notes">
-          <div class="note-chip chip-1">consultas web ↑</div>
-          <div class="note-chip chip-2">publicidad ↑</div>
-          <div class="note-chip chip-3">campaña escolar</div>
+      <div class="hero-art-wrap">
+        <div class="hero-art glass">
+          <img src="{{ url_for('static', filename='camion-agricola.svg') }}" alt="Ilustración de camión cargado con productos agrícolas cruzando montañas y sembríos" width="880" height="680">
+          <span class="float-tag tag-a">🚚 Ruta en movimiento</span>
+          <span class="float-tag tag-b">🌱 Carga agrícola</span>
         </div>
-        <p class="visual-caption">Mientras más señales positivas recibe el modelo, mayor suele ser el número estimado de pedidos.</p>
+        <p class="art-caption">De la distancia y la carga a una estimación explicable.</p>
       </div>
     </section>
 
-    
-
-    <section id="predictor" class="predictor-grid">
-      <section class="panel glass form-panel">
-        <div class="panel-top">
-          <p class="section-label">01 · INGRESA LOS DATOS</p>
-          <h3>Calcula los pedidos estimados</h3>
-          <p>Usa valores dentro del rango permitido por el caso.</p>
-        </div>
-
-        <form method="post" action="#predictor" class="predict-form">
-          <label for="consultas">Consultas web por semana</label>
-          <div class="input-shell glow-on-focus">
-            <input id="consultas" name="consultas" type="number" min="5" max="70" step="1" required value="{{ valores.consultas }}">
-            <span>5 a 70</span>
-          </div>
-
-          <label for="publicidad">Inversión en publicidad</label>
-          <div class="input-shell glow-on-focus">
-            <b>S/</b>
-            <input id="publicidad" name="publicidad" type="number" min="0" max="1100" step="0.01" required value="{{ valores.publicidad }}">
-            <span>0 a 1100</span>
-          </div>
-
-          <label for="campana">Campaña escolar</label>
-          <div class="select-shell glow-on-focus">
-            <select id="campana" name="campana">
-              <option value="0" {% if valores.campana == '0' %}selected{% endif %}>0 · No hay campaña</option>
-              <option value="1" {% if valores.campana == '1' %}selected{% endif %}>1 · Sí hay campaña</option>
-            </select>
-          </div>
-
-          <button class="pulse-btn" type="submit">Predecir ahora <span>→</span></button>
-        </form>
-
-        {% if error %}
-          <div class="alert error-box">{{ error }}</div>
-        {% endif %}
-      </section>
-
-      <section class="panel glass result-panel">
-        <div class="panel-top">
-          <p class="section-label">02 · RESULTADO</p>
-          <h3>Interpretación del pronóstico</h3>
-          <p>No solo te mostramos el número, también te explicamos su sentido.</p>
-        </div>
-
-        {% if resultado %}
-        <div class="result-glow"></div>
-        <div class="big-result">{{ resultado.entero }}<small> kits</small></div>
-        <p class="result-decimal">Resultado matemático exacto: <strong>{{ resultado.decimal }}</strong> pedidos</p>
-
-        <div class="result-mini-grid">
-          <div><span>Consultas</span><strong>{{ resultado.consultas }}</strong></div>
-          <div><span>Publicidad</span><strong>S/ {{ resultado.publicidad }}</strong></div>
-          <div><span>Campaña</span><strong>{{ resultado.campana }}</strong></div>
-        </div>
-
-        <div class="why-box">
-          <h4>¿Por qué salió ese resultado?</h4>
-          <ul>
-            {% for idea in explicaciones %}
-            <li>{{ idea }}</li>
-            {% endfor %}
-          </ul>
-          <p class="final-idea">{{ conclusion }}</p>
-        </div>
-        {% else %}
-        <div class="empty-state">
-          <div class="empty-badge">🤖</div>
-          <h4>Tu predicción aparecerá aquí</h4>
-          <p>Completa el formulario y observa cómo el modelo transforma los datos en una estimación comprensible.</p>
-        </div>
-        {% endif %}
-      </section>
-    </section>
-
-    <section id="como-funciona" class="explain-grid">
-      <article class="explain-card glass tilt">
-        <span class="number-pill">1</span>
-        <h3>Recibe los datos</h3>
-        <p>La página toma tres entradas: <strong>consultas web</strong>, <strong>inversión publicitaria</strong> y <strong>campaña escolar</strong>. Esas variables explican el comportamiento de la demanda semanal.</p>
-      </article>
-      <article class="explain-card glass tilt">
-        <span class="number-pill">2</span>
-        <h3>Aplica el modelo</h3>
-        <p>El sistema usa una fórmula de <strong>regresión lineal múltiple</strong>. Cada variable tiene un peso aprendido durante el entrenamiento con los datos históricos del caso.</p>
-      </article>
-      <article class="explain-card glass tilt">
-        <span class="number-pill">3</span>
-        <h3>Interpreta la predicción</h3>
-        <p>El número final representa cuántos kits podrían pedirse. Después lo redondeamos a una cantidad entera y mostramos una explicación simple del porqué.</p>
-      </article>
-    </section>
-
-    
-    <section class="gallery-section" aria-labelledby="galeria-titulo">
-      <div class="section-header">
-        <p class="section-label">03 · ROBÓTICA EN ACCIÓN</p>
-        <h3 id="galeria-titulo">De los circuitos a las decisiones</h3>
-        <p>Explora cómo las herramientas tecnológicas y los datos se conectan en un proyecto de Machine Learning.</p>
+    <section id="calculadora" class="workbench" aria-labelledby="calc-title">
+      <div class="section-intro">
+        <p class="section-kicker">01 / SIMULADOR</p>
+        <h2 id="calc-title">Diseña tu viaje. <span>Descubre cuánto podría costar.</span></h2>
+        <p>Modifica los valores y presiona «Estimar costo». La página calcula con los coeficientes aprendidos a partir del CSV original.</p>
       </div>
-      <div class="gallery-grid">
-        <article class="gallery-card glass">
-          <img src="{{ url_for('static', filename='robot-lab.svg') }}" alt="Ilustración colorida de un robot educativo con sensores y ruedas" loading="lazy">
-          <div><span class="gallery-label">01 • PRODUCTO</span><h4>Conoce los kits</h4><p>Los kits integran componentes, programación y creatividad para construir proyectos tecnológicos.</p></div>
-        </article>
-        <article class="gallery-card glass">
-          <img src="{{ url_for('static', filename='prediccion.svg') }}" alt="Ilustración de una gráfica ascendente que representa las predicciones del modelo" loading="lazy">
-          <div><span class="gallery-label">02 • DATOS</span><h4>Encuentra patrones</h4><p>El algoritmo relaciona consultas web, anuncios y campañas escolares con los pedidos.</p></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="examples-zone">
-      <div class="section-header">
-        <p class="section-label">04 · EJEMPLIFICACIÓN</p>
-        <h3>Prueba escenarios de ejemplo</h3>
-        <p>Puedes explorar casos rápidos y ver cómo cambian los pedidos.</p>
-      </div>
-      <div class="examples-grid">
-        {% for ejemplo in ejemplos %}
-        <article class="example-card glass tilt">
-          <h4>{{ ejemplo.titulo }}</h4>
-          <p>{{ ejemplo.descripcion }}</p>
-          <ul>
-            <li><span>Consultas web</span> <strong>{{ ejemplo.consultas }}</strong></li>
-            <li><span>Publicidad</span> <strong>S/ {{ ejemplo.publicidad }}</strong></li>
-            <li><span>Campaña</span> <strong>{{ ejemplo.campana }}</strong></li>
-          </ul>
-          <div class="example-result">Predicción: <b>{{ ejemplo.prediccion }}</b> kits <small>({{ ejemplo.prediccion_decimal }})</small></div>
-          <form method="post" action="#predictor">
-            <input type="hidden" name="consultas" value="{{ ejemplo.consultas }}">
-            <input type="hidden" name="publicidad" value="{{ ejemplo.publicidad }}">
-            <input type="hidden" name="campana" value="{{ ejemplo.campana }}">
-            <button type="submit" class="mini-btn">Usar este ejemplo</button>
+      <div class="calc-grid">
+        <section class="panel form-card glass">
+          <div class="panel-head"><span class="icon-circle">🛣️</span><div><h3>Información del recorrido</h3><p>Completa las tres variables de entrada</p></div></div>
+          <form method="post" action="#calculadora">
+            <label for="distancia">Distancia de la ruta <small>3 a 165 km</small></label>
+            <div class="input-wrap"><span class="prefix">📍</span><input id="distancia" name="distancia" type="number" min="3" max="165" step="0.1" required value="{{ valores.distancia }}"><span class="suffix">km</span></div>
+            <label for="carga">Peso de los productos <small>50 a 2050 kg</small></label>
+            <div class="input-wrap"><span class="prefix">📦</span><input id="carga" name="carga" type="number" min="50" max="2050" step="0.1" required value="{{ valores.carga }}"><span class="suffix">kg</span></div>
+            <label for="via">Tipo de carretera</label>
+            <div class="input-wrap select-wrap"><span class="prefix">🚧</span><select id="via" name="via"><option value="0" {% if valores.via == '0' %}selected{% endif %}>Vía asfaltada (0)</option><option value="1" {% if valores.via == '1' %}selected{% endif %}>Vía no asfaltada (1)</option></select></div>
+            <button type="submit" class="btn submit">Estimar costo del transporte <span aria-hidden="true">→</span></button>
           </form>
+          {% if error %}<p role="alert" class="error-box">{{ error }}</p>{% endif %}
+          <p class="form-note">Los importes se basan en datos simulados. No constituyen una cotización real.</p>
+        </section>
+        <section class="panel result-card glass" aria-live="polite">
+          <div class="panel-head"><span class="icon-circle green">💰</span><div><h3>Resultado del modelo</h3><p>Estimación y explicación detallada</p></div></div>
+          {% if resultado %}
+          <div class="result-top"><small>El viaje podría costar aproximadamente</small><p class="money"><span>S/</span> {{ resultado.importe }}</p><span class="result-pill">COSTO ESTIMADO</span></div>
+          <div class="route-summary"><span>📍 {{ resultado.distancia }} km</span><span>📦 {{ resultado.carga }} kg</span><span>🛣️ {{ resultado.tipo_via }}</span></div>
+          <h4 class="subheading">¿Cómo llegó a esta cifra?</h4>
+          <div class="formula-breakdown">
+            <div><span>Tarifa base del modelo</span><b>S/ {{ '%.2f'|format(resultado.desglose.base) }}</b></div>
+            <div><span>Componente por distancia</span><b>+ S/ {{ '%.2f'|format(resultado.desglose.distancia) }}</b></div>
+            <div><span>Componente por peso</span><b>+ S/ {{ '%.2f'|format(resultado.desglose.carga) }}</b></div>
+            <div><span>Efecto de la vía</span><b>+ S/ {{ '%.2f'|format(resultado.desglose.via) }}</b></div>
+          </div>
+          <details class="more-explain" open><summary>¿Por qué se estima este costo?</summary><ul>{% for frase in resultado.interpretaciones %}<li>{{ frase }}</li>{% endfor %}</ul></details>
+          {% else %}
+          <div class="result-placeholder"><div class="placeholder-circle">S/</div><h4>Tu estimación aparecerá aquí</h4><p>Prueba con 25 km, 400 kg y vía asfaltada para descubrir cuánto estima el modelo.</p></div>
+          <div class="muted-formula">Costo = tarifa base + distancia + carga + efecto de la vía</div>
+          {% endif %}
+        </section>
+      </div>
+    </section>
+
+    <section id="ejemplos" class="examples" aria-labelledby="ej-title">
+      <div class="section-intro"><p class="section-kicker">02 / EJEMPLOS INTERACTIVOS</p><h2 id="ej-title">Tres rutas. <span>Tres costos diferentes.</span></h2><p>Los dos primeros escenarios corresponden a las pruebas obligatorias del instructor. Pulsa un ejemplo para llevarlo al simulador.</p></div>
+      <div class="example-grid">
+        {% for item in ejemplos %}
+        <article class="example-card glass">
+          <div class="example-head"><span class="example-number">0{{ loop.index }}</span><span class="tiny-pill">{{ item.etiqueta }}</span></div>
+          <span class="micro-title">{{ item.subtitulo }}</span><h3>{{ item.nombre }}</h3><p>{{ item.detalle }}</p>
+          <div class="example-facts"><span><b>{{ item.distancia }} km</b> de ruta</span><span><b>{{ item.carga }} kg</b> de carga</span></div>
+          <div class="example-footer"><div><small>Estimación</small><strong>S/ {{ item.costo }}</strong></div>
+            <form method="post" action="#calculadora"><input type="hidden" name="distancia" value="{{ item.distancia }}"><input type="hidden" name="carga" value="{{ item.carga }}"><input type="hidden" name="via" value="{{ item.via }}"><button type="submit">Probar <span aria-hidden="true">↗</span></button></form>
+          </div>
         </article>
         {% endfor %}
       </div>
     </section>
 
-    <section class="concept-zone glass">
-      <div class="section-header left">
-        <p class="section-label">05 · ¿POR QUÉ FUNCIONA?</p>
-        <h3>Explicación sencilla del modelo</h3>
+    <section id="explicacion" class="process" aria-labelledby="how-title">
+      <div class="section-intro"><p class="section-kicker">03 / EXPLICACIÓN PARA APRENDER</p><h2 id="how-title">De los datos a la predicción: <span>así funciona.</span></h2><p>No es magia: es una ecuación que aprende de ejemplos y combina tres factores.</p></div>
+      <div class="process-grid">
+        <article class="step glass"><div class="step-icon">01 <span>📊</span></div><h3>Aprender de 130 viajes</h3><p>Se revisan 130 registros simulados, se separan 104 para entrenar y 26 para probar, y se buscan relaciones entre las variables y el costo.</p></article>
+        <article class="step glass"><div class="step-icon">02 <span>🧠</span></div><h3>Entrenar la regresión</h3><p>Scikit-learn encuentra un intercepto y tres coeficientes. Cada uno representa cuánto cambia el costo estimado cuando cambia un factor, manteniendo los otros constantes.</p></article>
+        <article class="step glass"><div class="step-icon">03 <span>💡</span></div><h3>Explicar en soles</h3><p>Flask recibe los valores, calcula el resultado con la fórmula y muestra una descomposición entendible del total. No hace falta JavaScript.</p></article>
       </div>
-      <div class="concept-grid">
-        <article>
-          <h4>Porque aprende patrones</h4>
-          <p>El modelo observa ejemplos anteriores y detecta cómo se relacionan las entradas con los pedidos. Si aumentan las consultas y la publicidad, normalmente también sube la predicción.</p>
-        </article>
-        <article>
-          <h4>Porque cada variable aporta algo distinto</h4>
-          <p>Las consultas web representan el interés, la publicidad impulsa visibilidad y la campaña escolar agrega un efecto extra. Al combinarse, producen una estimación más útil que usar una sola variable.</p>
-        </article>
-        <article>
-          <h4>Porque la regresión estima una tendencia</h4>
-          <p>No adivina el futuro con certeza total. Lo que hace es calcular una tendencia probable a partir de los datos de entrenamiento. Por eso sirve como apoyo para decidir, no como garantía absoluta.</p>
-        </article>
+      <div class="science-card glass">
+        <div class="science-copy"><span class="small-label">LA ECUACIÓN DETRÁS DE TODO</span><h3>¿Por qué el camino cambia el precio?</h3>
+          <p>El modelo encontró relaciones positivas para kilómetros, kilos transportados y vías no asfaltadas. Según esta muestra, una carretera no asfaltada añade aproximadamente <strong>S/ {{ '%.2f'|format(coeficientes.via_no_asfaltada) }}</strong> al mismo recorrido y carga.</p>
+          <div class="equation">Costo ≈ {{ '%.2f'|format(intercepto) }} + {{ '%.4f'|format(coeficientes.distancia_km) }} × km + {{ '%.4f'|format(coeficientes.carga_kg) }} × kg + {{ '%.2f'|format(coeficientes.via_no_asfaltada) }} × vía</div>
+          <p class="footnote">«Vía» vale 0 si está asfaltada y 1 si no está asfaltada. Esta ecuación describe asociaciones aprendidas, no demuestra causalidad.</p>
+        </div>
+        <img src="{{ url_for('static',filename='mapa-ruta.svg') }}" width="720" height="450" alt="Mapa ilustrado de una ruta desde el origen agrícola hasta el destino" loading="lazy">
       </div>
     </section>
 
-    <section class="faq-grid">
-      <details class="glass faq-item">
-        <summary>¿Qué significa MAE?</summary>
-        <p>Es el error absoluto medio. Nos dice cuántos pedidos se equivoca el modelo, en promedio, cuando hace predicciones con los datos de prueba.</p>
-      </details>
-      <details class="glass faq-item">
-        <summary>¿Qué significa R²?</summary>
-        <p>Indica qué tan bien la variación de los datos es explicada por el modelo. Mientras más se acerque a 1, mejor suele ajustarse a la información evaluada.</p>
-      </details>
-      <details class="glass faq-item">
-        <summary>¿La predicción siempre se cumple?</summary>
-        <p>No. Es una estimación educativa basada en datos simulados. Sirve para comprender el proceso de modelado y apoyar decisiones, no para garantizar ventas reales.</p>
-      </details>
+    <section class="model-info"><div class="section-intro"><p class="section-kicker">04 / CALIDAD Y LÍMITES</p><h2>¿Podemos confiar <span>ciegamente?</span></h2></div>
+      <div class="fact-grid"><article class="fact glass"><span>📉</span><h3>MAE = S/ {{ '%.2f'|format(metricas.mae) }}</h3><p>En los 26 viajes de prueba, el error absoluto medio fue de unos S/ {{ '%.2f'|format(metricas.mae) }}. Es un promedio, no un error máximo.</p></article><article class="fact glass"><span>📈</span><h3>R² = {{ '%.4f'|format(metricas.r2) }}</h3><p>El modelo explica aproximadamente {{ '%.1f'|format(metricas.r2 * 100) }} % de la variación observada en ese conjunto de prueba, pero puede fallar en viajes reales.</p></article><article class="fact glass"><span>⚠️</span><h3>Datos simulados</h3><p>No contempla precios reales del combustible, clima, peajes, tráfico ni condiciones particulares de cada ruta. No reemplaza una cotización profesional.</p></article></div>
+      <details class="qa glass"><summary>¿Por qué se utiliza regresión lineal múltiple?</summary><p>Porque queremos predecir un valor numérico (soles) usando tres variables. El algoritmo combina sus coeficientes para obtener un costo aproximado.</p></details>
+      <details class="qa glass"><summary>¿Cómo podría disminuir el margen de error?</summary><p>Con datos reales suficientes, mejor registro de costos, más variables relevantes, validación cruzada y una comparación justa de algoritmos sin usar los datos de prueba durante el entrenamiento.</p></details>
+      <details class="qa glass"><summary>¿Qué representa el recargo de la vía no asfaltada?</summary><p>Es el coeficiente asociado a pasar de 0 a 1 en la variable tipo de vía, manteniendo constantes los kilómetros y la carga. Es una relación estadística del conjunto de datos simulado.</p></details>
     </section>
-
-    <footer class="footer">
-      <p>Proyecto formativo SENATI · Datos simulados · Las estimaciones no garantizan ventas. Fotografía de componentes: Unsplash.</p>
-    </footer>
-  </main>
-</body>
-</html>
+    <footer class="footer"><div><strong>AgroRuta</strong> <span>· SENATI · Caso práctico 02 · Python + Flask + Scikit-learn</span></div><a href="#inicio">Volver arriba ↑</a></footer>
+  </div>
+</body></html>
