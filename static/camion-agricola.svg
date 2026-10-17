@@ -1,0 +1,33 @@
+<svg viewBox="0 0 880 680" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ttl des">
+<title id="ttl">Transporte agrícola entre valles y montañas</title><desc id="des">Ilustración colorida de un camión cargado con cajas de cultivos sobre una carretera rural, montañas y campos agrícolas.</desc>
+<defs>
+<linearGradient id="sky" x1="0" x2=".85" y1="0" y2="1"><stop stop-color="#1e5b83"/><stop offset=".52" stop-color="#39b7b4"/><stop offset="1" stop-color="#b1ed9d"/></linearGradient>
+<linearGradient id="truck" x1="0" x2="1"><stop stop-color="#f7d45a"/><stop offset="1" stop-color="#ff9f49"/></linearGradient>
+<linearGradient id="field" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#abe376"/><stop offset="1" stop-color="#2c9367"/></linearGradient>
+<filter id="shadow" x="-30%" y="-40%" width="160%" height="190%"><feGaussianBlur stdDeviation="13"/></filter>
+</defs>
+<rect width="880" height="680" rx="40" fill="url(#sky)"/>
+<circle cx="705" cy="133" r="72" fill="#ffe9a3" opacity=".95"/>
+<circle cx="705" cy="133" r="105" fill="#fff9d1" opacity=".17"/>
+<path d="M0 361L154 216 272 325 456 144 622 358 745 242 880 391V680H0Z" fill="#246b7b"/>
+<path d="M0 425L141 305 268 396 432 284 563 423 711 336 880 437V680H0Z" fill="#3b9871"/>
+<path d="M0 447Q181 389 330 448T880 418V680H0Z" fill="url(#field)"/>
+<g stroke="#e4ffb1" stroke-width="4" opacity=".48"><path d="M-30 535Q200 465 425 518T910 466"/><path d="M-20 580Q235 511 440 564T910 513"/><path d="M-20 634Q245 558 444 616T910 558"/></g>
+<path d="M-60 651Q258 435 514 543T950 599" fill="none" stroke="#234858" stroke-width="126"/>
+<path d="M-60 651Q258 435 514 543T950 599" fill="none" stroke="#f7ce71" stroke-width="7" stroke-dasharray="25 27" stroke-linecap="round"/>
+<ellipse cx="464" cy="513" rx="267" ry="35" fill="#142e39" opacity=".36" filter="url(#shadow)"/>
+<g transform="translate(190 321)">
+<rect x="15" y="78" width="365" height="130" rx="16" fill="#174d59" stroke="#e0f5b5" stroke-width="5"/>
+<rect x="28" y="92" width="338" height="92" rx="9" fill="#2ca784"/>
+<path d="M50 96V184M113 96V184M177 96V184M242 96V184M309 96V184" stroke="#157a64" stroke-width="12"/>
+<g fill="#e8bb6c" stroke="#8b603b" stroke-width="4"><rect x="42" y="21" width="102" height="75" rx="5"/><rect x="148" y="21" width="105" height="75" rx="5"/><rect x="257" y="21" width="94" height="75" rx="5"/></g>
+<g fill="#79be51"><circle cx="83" cy="27" r="23"/><circle cx="110" cy="20" r="20"/><circle cx="186" cy="27" r="24"/><circle cx="214" cy="20" r="22"/><circle cx="294" cy="21" r="24"/><circle cx="323" cy="28" r="22"/></g>
+<path d="M379 112H447L501 159V210H379Z" fill="url(#truck)" stroke="#994a34" stroke-width="5" stroke-linejoin="round"/>
+<path d="M397 126H435L462 157H397Z" fill="#a0e5f9" stroke="#e9ffff" stroke-width="4"/>
+<rect x="437" y="172" width="53" height="10" rx="4" fill="#fef7c6"/>
+<rect x="35" y="204" width="455" height="18" rx="6" fill="#112f40"/>
+<g><circle cx="97" cy="223" r="33" fill="#16313e" stroke="#dcf1db" stroke-width="9"/><circle cx="350" cy="223" r="33" fill="#16313e" stroke="#dcf1db" stroke-width="9"/><circle cx="452" cy="223" r="33" fill="#16313e" stroke="#dcf1db" stroke-width="9"/></g>
+<g fill="#acc9c3"><circle cx="97" cy="223" r="9"/><circle cx="350" cy="223" r="9"/><circle cx="452" cy="223" r="9"/></g>
+</g>
+<g fill="#133b4b" font-family="system-ui,sans-serif" font-weight="800"><text x="45" y="68" font-size="27" letter-spacing="2">AGRORUTA</text><text x="47" y="103" font-size="13" letter-spacing="4">LOGÍSTICA INTELIGENTE</text></g>
+</svg>
