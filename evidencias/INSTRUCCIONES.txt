@@ -1,0 +1,14 @@
+EVIDENCIAS PARA ENTREGA - CASO 02
+
+1. Abrir la web publicada y probar 25 km, 400 kg, vía asfaltada (0).
+   Guardar la captura de la pantalla con resultado aproximado S/ 133.79.
+   Nombre sugerido: prueba_01_25km_400kg_asfaltada.png
+
+2. Probar 100 km, 1200 kg, vía no asfaltada (1).
+   Guardar la captura con resultado aproximado S/ 454.13.
+   Nombre sugerido: prueba_02_100km_1200kg_no_asfaltada.png
+
+3. Adjuntar ambas capturas a la entrega, junto con notebook ejecutado,
+   CSV, modelo.json, entrenar_modelo.py y archivos de la web.
+
+Los resultados y el enlace se incluyen en el notebook del proyecto.
