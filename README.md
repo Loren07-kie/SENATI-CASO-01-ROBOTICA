@@ -43,7 +43,7 @@ La app necesita tres valores: distancia (3–165 km), carga (50–2050 kg) y tip
 
 ## Página web publicada
 
-**URL:** PENDIENTE_DE_PUBLICAR
+**URL:** https://senati-caso-02-transporte-agricola.onrender.com
 
 Se debe pegar el enlace público final en el cuaderno `02_Caso_02_Resuelto.ipynb` y tomar las dos capturas obligatorias desde la web.
 
